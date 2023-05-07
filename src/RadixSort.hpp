@@ -15,8 +15,6 @@ protected:
   int num_values{};
   int iteration = 0;
 
-  virtual void calculate_counts() = 0;
-  virtual void calculate_offsets() = 0;
-  virtual void place_values() = 0;
-  virtual auto get_key(int index) -> int = 0;
+  std::vector<int> pow10 = {1,      10,      100,      1000,      10000,
+                            100000, 1000000, 10000000, 100000000, 1000000000};
 };
