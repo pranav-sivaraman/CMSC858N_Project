@@ -17,14 +17,18 @@ void print_vector(const std::vector<int> v) {
 auto main() -> int {
   int max_digits = 4;
   int N = 10;
+
   std::vector<int> data(N);
   std::vector<int> sorted_data(N);
 
   std::random_device rnd_device;
   std::mt19937 mersenne_engine{rnd_device()}; // Generates random integers
   std::uniform_int_distribution<int> dist{0, 1000};
+
   auto gen = [&dist, &mersenne_engine]() { return dist(mersenne_engine); };
+
   std::generate(data.begin(), data.end(), gen);
+
   std::unique_ptr<RadixSort> model =
       std::make_unique<OMPRadixSort>(data, sorted_data, max_digits, N);
 
@@ -41,6 +45,7 @@ auto main() -> int {
     } else {
       std::cout << "Data is not sorted!\n";
     }
+
     std::cout << "Sorted Data: ";
     print_vector(sorted_data);
   }
