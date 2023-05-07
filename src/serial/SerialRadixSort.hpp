@@ -20,8 +20,8 @@ private:
   std::vector<int> pow10 = {1,      10,      100,      1000,      10000,
                             100000, 1000000, 10000000, 100000000, 1000000000};
 
-  void calculate_counts() override;
-  void calculate_offsets() override;
-  void place_values() override;
-  auto get_key(int index) -> int override;
+  void calculate_counts();
+  void calculate_offsets();
+  void place_values();
+  auto get_key(int index) -> int;
 };
