@@ -44,3 +44,6 @@ CTestTestfile.cmake
 _deps
 
 [Bb][Uu][Ii][Ll][Dd]/
+
+.cache/
+.clang-tidy
