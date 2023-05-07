@@ -48,9 +48,7 @@ void SerialRadixSort::sort() {
     std::fill(offsets.begin(), offsets.end(), 0);
 
     if (iteration != num_digits - 1) {
-      std::vector<int> tmp = values;
-      values = sorted_values;
-      sorted_values = tmp;
+      std::swap(values, sorted_values);
     }
   }
 }
