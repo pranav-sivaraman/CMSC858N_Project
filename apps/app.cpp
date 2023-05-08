@@ -3,6 +3,7 @@
 #include <random>
 #include <vector>
 
+#include "KokkosRadixSort.hpp"
 #include "OMPRadixSort.hpp"
 #include "RAJARadixSort.hpp"
 #include "RadixSort.hpp"
@@ -33,7 +34,7 @@ auto main() -> int {
   const std::string model_names[3] = {"Serial", "OMP", "RAJA"};
 
   std::unique_ptr<RadixSort> model =
-      std::make_unique<RAJARadixSort>(data, sorted_data, max_digits, N);
+      std::make_unique<KokkosRadixSort>(data, sorted_data, max_digits, N);
 
   int num_models = 1;
   std::cout << "Original Data: ";

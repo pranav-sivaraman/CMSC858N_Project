@@ -25,7 +25,6 @@ set(ENABLE_OPENMP
     CACHE BOOL "")
 
 add_subdirectory(${RAJA_TREE} ${CMAKE_BINARY_DIR}/raja)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 add_library(raja_radix RAJARadixSort.cpp RAJARadixSort.hpp)
 target_compile_features(raja_radix PUBLIC cxx_std_17)
