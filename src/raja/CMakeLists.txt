@@ -25,8 +25,6 @@ set(ENABLE_OPENMP
     CACHE BOOL "")
 
 add_subdirectory(${RAJA_TREE} ${CMAKE_BINARY_DIR}/raja)
-# register_link_library(RAJA) RAJA's cmake screws with where the binary will end
-# up, resetting it here:
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 add_library(raja_radix RAJARadixSort.cpp RAJARadixSort.hpp)

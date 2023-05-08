@@ -1,7 +1,6 @@
 #include "OMPRadixSort.hpp"
 
 #include <cmath>
-#include <iostream>
 
 OMPRadixSort::OMPRadixSort(std::vector<int> values,
                            std::vector<int> sorted_values, int num_digits,
