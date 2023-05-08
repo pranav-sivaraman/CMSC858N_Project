@@ -30,7 +30,7 @@ auto main() -> int {
 
   std::generate(data.begin(), data.end(), gen);
 
-  const std::string models[3] = {"Serial", "OMP", "RAJA"};
+  const std::string model_names[3] = {"Serial", "OMP", "RAJA"};
 
   std::unique_ptr<RadixSort> model =
       std::make_unique<RAJARadixSort>(data, sorted_data, max_digits, N);
