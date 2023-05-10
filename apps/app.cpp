@@ -8,6 +8,7 @@
 #include "OMPRadixSort.hpp"
 #include "RAJARadixSort.hpp"
 #include "RadixSort.hpp"
+#include "SYCLRadixSort.hpp"
 #include "SerialRadixSort.hpp"
 
 void print_vector(const std::vector<int> v) {
@@ -19,7 +20,7 @@ void print_vector(const std::vector<int> v) {
 
 auto main(int argc, char *argv[]) -> int {
   int max_digits = 5;
-  int N = 1000;
+  int N = 10;
 
   if (argc >= 2) {
     N = std::stoi(argv[1]);
@@ -39,7 +40,7 @@ auto main(int argc, char *argv[]) -> int {
   const std::string model_names[4] = {"Serial", "OMP", "RAJA", "Kokkos"};
 
   std::unique_ptr<RadixSort> model =
-      std::make_unique<SerialRadixSort>(data, sorted_data, max_digits, N);
+      std::make_unique<SYCLRadixSort>(data, sorted_data, max_digits, N);
 
   std::chrono::steady_clock::time_point start;
   std::chrono::steady_clock::time_point end;
