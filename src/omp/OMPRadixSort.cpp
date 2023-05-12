@@ -42,8 +42,15 @@ void OMPRadixSort::calculate_counts() {
 
 void OMPRadixSort::calculate_offsets() {
   transpose(counts, transpose_counts, num_blocks, M);
-  std::exclusive_scan(transpose_counts.cbegin(), transpose_counts.cend(),
-                      transpose_offsets.begin(), 0);
+
+  int sum = 0;
+#pragma omp parallel for simd reduction(inscan, + : sum)
+  for (int k = 0; k < num_buckets; k++) {
+    transpose_offsets[k] = sum;
+#pragma omp scan exclusive(sum)
+    sum += transpose_counts[k];
+  }
+
   transpose(transpose_offsets, offsets, M, num_blocks);
 }
 
