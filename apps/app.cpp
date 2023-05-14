@@ -4,6 +4,7 @@
 
 #include "KokkosRadixSort.hpp"
 #include "OMPRadixSort.hpp"
+#include "RAJARadixSort.hpp"
 #include "SerialRadixSort.hpp"
 
 void print_vector(const std::vector<int> v) {
@@ -31,10 +32,12 @@ auto main(int argc, char *argv[]) -> int {
 
   std::generate(input.begin(), input.end(), gen);
 
-  std::vector<const std::string> model_names = {"Serial", "OpenMP", "Kokkos"};
+  std::vector<const std::string> model_names = {"Serial", "OpenMP", "Kokkos",
+                                                "RAJA"};
   RadixSort *models[] = {new SerialRadixSort(max_digits, N, input),
                          new OMPRadixSort(max_digits, N, input),
-                         new KokkosRadixSort(max_digits, N, input)};
+                         new KokkosRadixSort(max_digits, N, input),
+                         new RAJARadixSort(max_digits, N, input)};
   size_t num_models = model_names.size();
 
   std::chrono::steady_clock::time_point start;
