@@ -9,7 +9,15 @@
 class RadixSort {
 public:
   RadixSort(size_t num_digits, size_t num_values)
-      : num_digits(num_digits), num_values(num_values){};
+      : num_digits(num_digits), num_values(num_values) {
+    block_size = num_values / NUM_KEYS;
+    if (block_size == 0) {
+      block_size = 1;
+    }
+    num_blocks = std::ceil((float)num_values / (float)block_size);
+    num_buckets = num_blocks * NUM_KEYS;
+  }
+
   virtual ~RadixSort() = default;
 
   virtual void sort() {
@@ -37,13 +45,18 @@ protected:
   size_t num_digits;
   size_t num_values;
   size_t iteration = 0;
+  size_t num_blocks;
+  size_t block_size;
+  size_t num_buckets;
 
-  std::array<int, M> pow10 = {1,      10,      100,      1000,      10000,
-                              100000, 1000000, 10000000, 100000000, 1000000000};
+  std::array<int, NUM_KEYS> pow10 = {1,         10,        100,     1000,
+                                     10000,     100000,    1000000, 10000000,
+                                     100000000, 1000000000};
 
   virtual auto get_key(size_t index) -> size_t = 0;
   virtual void calculate_counts() = 0;
   virtual void calculate_offsets() = 0;
   virtual void place_values() = 0;
   virtual void reset() = 0;
+  virtual void scan() = 0;
 };
