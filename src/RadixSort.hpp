@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#define M 10
+#define NUM_KEYS 10
 
 class RadixSort {
 public:
