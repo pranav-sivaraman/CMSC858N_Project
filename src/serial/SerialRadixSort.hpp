@@ -7,7 +7,6 @@ public:
   SerialRadixSort(size_t num_digits, size_t num_values,
                   std::vector<int> values);
 
-  void sort() override;
   auto get_sorted_values() -> std::vector<int> override;
 
 protected:
@@ -21,4 +20,5 @@ protected:
   void calculate_offsets() override;
   void place_values() override;
   void reset() override;
+  void scan() override;
 };

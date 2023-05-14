@@ -5,19 +5,9 @@
 OMPRadixSort::OMPRadixSort(size_t num_digits, size_t num_values,
                            std::vector<int> input)
     : RadixSort(num_digits, num_values), values(input),
-      sorted_values(num_values, 0) {
-  block_size = num_values / M;
-  if (block_size == 0) {
-    block_size = 1;
-  }
-  num_blocks = std::ceil((float)num_values / (float)block_size);
-  num_buckets = num_blocks * M;
-
-  counts = std::vector<int>(num_buckets, 0);
-  transpose_counts = std::vector<int>(num_buckets, 0);
-  offsets = std::vector<int>(num_buckets, 0);
-  transpose_offsets = std::vector<int>(num_buckets, 0);
-}
+      sorted_values(num_values, 0), counts(num_buckets, 0),
+      transpose_counts(num_buckets, 0), offsets(num_buckets, 0),
+      transpose_offsets(num_buckets, 0) {}
 
 auto OMPRadixSort::get_sorted_values() -> std::vector<int> {
   return sorted_values;
@@ -35,23 +25,15 @@ void OMPRadixSort::calculate_counts() {
 
     for (size_t i = start; i < end; i++) {
       size_t key = get_key(i);
-      counts[key + block_number * M]++;
+      counts[key + block_number * NUM_KEYS]++;
     }
   }
 }
 
 void OMPRadixSort::calculate_offsets() {
-  transpose(counts, transpose_counts, num_blocks, M);
-
-  int sum = 0;
-#pragma omp parallel for simd reduction(inscan, + : sum)
-  for (int k = 0; k < num_buckets; k++) {
-    transpose_offsets[k] = sum;
-#pragma omp scan exclusive(sum)
-    sum += transpose_counts[k];
-  }
-
-  transpose(transpose_offsets, offsets, M, num_blocks);
+  transpose(counts, transpose_counts, num_blocks, NUM_KEYS);
+  scan();
+  transpose(transpose_offsets, offsets, NUM_KEYS, num_blocks);
 }
 
 void OMPRadixSort::place_values() {
@@ -62,7 +44,7 @@ void OMPRadixSort::place_values() {
 
     for (size_t i = start; i < end; i++) {
       size_t key = get_key(i);
-      sorted_values[offsets[key + block_number * M]++] = values[i];
+      sorted_values[offsets[key + block_number * NUM_KEYS]++] = values[i];
     }
   }
 }
@@ -76,9 +58,20 @@ void OMPRadixSort::reset() {
   std::swap(values, sorted_values);
 }
 
+void OMPRadixSort::scan() {
+  int sum = 0;
+#pragma omp parallel for reduction(inscan, + : sum)
+  for (int k = 0; k < num_buckets; k++) {
+    transpose_offsets[k] = sum;
+#pragma omp scan exclusive(sum)
+    sum += transpose_counts[k];
+  }
+}
+
 void OMPRadixSort::transpose(const std::vector<int> &input,
                              std::vector<int> &output, size_t num_rows,
                              size_t num_cols) {
+#pragma omp parallel for
   for (size_t i = 0; i < num_buckets; i++) {
     size_t row = i / num_rows;
     size_t col = i % num_rows;
