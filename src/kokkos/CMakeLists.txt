@@ -1,5 +1,3 @@
-include(FetchContent)
-
 FetchContent_Declare(
   kokkos
   GIT_REPOSITORY https://github.com/kokkos/kokkos
