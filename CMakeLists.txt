@@ -5,7 +5,14 @@ project(
   VERSION 1.0
   LANGUAGES CXX)
 
-include(FetchContent)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 
-add_subdirectory(src)
-add_subdirectory(apps)
+include(ExternalProject)
+
+set_directory_properties(PROPERTIES EP_BASE ${CMAKE_BINARY_DIR}/ExtProjects)
+get_directory_property(EXT_BASE_PATH EP_BASE)
+
+set(EXT_INSTALL_PATH ${EXT_BASE_PATH}/Install)
+
+include(ExternalOpenSYCL)
+include(RadixSort)

@@ -1,0 +1,8 @@
+libdir=/Users/pranav/Documents/College/CMSC858N/project_alt/lib
+includedir=/Users/pranav/Documents/College/CMSC858N/project_alt/include
+
+Name: Sort
+Description: RAJA Portability Layer
+Version: 2022.10.5
+Libs: -rdynamic ${libdir}/libRAJA.a   -lc++
+Cflags:  -O3 -DNDEBUG  -Wall -Wextra      -I${includedir}
