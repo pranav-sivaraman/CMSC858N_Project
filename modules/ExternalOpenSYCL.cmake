@@ -3,8 +3,8 @@ set(OpenSYCL_ROOT
     CACHE INTERNAL "")
 ExternalProject_Add(
   opensycl
-  URL https://github.com/OpenSYCL/OpenSYCL/archive/refs/tags/v0.9.4.zip
-      DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+  GIT_REPOSITORY https://github.com/OpenSYCL/OpenSYCL.git
+  GIT_TAG develop
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
              -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
              -DCMAKE_INSTALL_PREFIX=${OpenSYCL_ROOT}
